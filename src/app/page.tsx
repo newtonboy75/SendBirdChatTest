@@ -31,7 +31,6 @@ export default function Home() {
           email: session?.user?.email!,
           nickname: session?.user?.name!,
           deleted: false,
-          
         };
         const createUser = await create(user_data);
         setUserId(createUser.user_id!);

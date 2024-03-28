@@ -3,8 +3,6 @@
 import { getServerSession } from "next-auth/next";
 import { prisma } from "./db";
 
-
-
 export const user = async (email: string) => {
   const data = getServerSession();
   const uemail = await prisma.user.findUnique({
@@ -17,19 +15,18 @@ export const user = async (email: string) => {
 
 export const create = async (data: any) => {
   const user = await prisma.user.create({ data });
-  return user
+  return user;
 };
 
 export const update = async (param: any) => {
-  const user =  await prisma.user.update({
+  const user = await prisma.user.update({
     where: {
       email: param.email,
     },
     data: {
       nickname: param.nickname,
-      user_profile: param.user_profile
+      user_profile: param.user_profile,
     },
-  })
+  });
   return user;
-}
-
+};

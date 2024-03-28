@@ -9,15 +9,17 @@ import { GroupChannel } from "@sendbird/chat/groupChannel";
 import { leave_channel, save_channel } from "@/database/channel";
 import { useRouter } from "next/navigation";
 
-
 export default function SendBirdWrapper() {
   const [currentChannel, setCurrentChannel] = useState<string>("");
   const [showSettings, setShowSettings] = useState<boolean>(false);
   const globalStore = useSendbirdStateContext();
-  //console.log(globalStore?.stores?.userStore?.user);
+
   const { data: session } = useSession();
   const router = useRouter();
 
+  /**
+   * updates user database
+   */
   const userProfileEdited = async () => {
     const data = {
       email: session?.user?.email!,
@@ -26,25 +28,36 @@ export default function SendBirdWrapper() {
     };
 
     await update(data);
-  }
+  };
 
+  /**
+   * check new channel and add to db
+   * @param channel 
+   * @returns 
+   */
   const channelCreated = async (channel: GroupChannel) => {
     console.log(channel);
- 
+
     const data = {
-      url: channel.url, 
+      url: channel.url,
       creator: [channel.creator?.nickname, channel.creator?.userId],
       created_at: new Date().toISOString(),
       channel_name: channel.name,
     };
     const new_channel = await save_channel(data);
-    return new_channel
-  }
+    return new_channel;
+  };
 
+  /**
+   * updates channel db when user leaves the 
+   * group channel
+   * 
+   * @param channel 
+   */
   const leftChannel = async (channel: string) => {
-    const channel_url = await leave_channel(channel)
-    router.refresh(); 
-  }
+    const channel_url = await leave_channel(channel);
+    router.refresh();
+  };
 
   return (
     <>
@@ -65,8 +78,6 @@ export default function SendBirdWrapper() {
               userProfileEdited();
             }}
             disableAutoSelect={false}
-            
-         
           />
         </div>
         <div className="sendbird-app__conversation-wrap flex-1">
@@ -85,7 +96,7 @@ export default function SendBirdWrapper() {
                 setShowSettings(false);
               }}
               onLeaveChannel={() => {
-                leftChannel(currentChannel)
+                leftChannel(currentChannel);
               }}
             />
           </div>
