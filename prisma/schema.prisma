@@ -1,0 +1,29 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model UserChannel {
+  id             Int      @id @default(autoincrement())
+  channel_name   String?  @db.VarChar(100)
+  url            String?  @unique
+  chatmate       String?  @db.VarChar(100)
+  total_messages Int?     @default(value: 0)
+  deleted        Boolean? @default(false)
+  creator     String[]
+  created_at     DateTime @default(now())
+}
+
+model User {
+  id           Int       @id @default(autoincrement())
+  user_id      String    @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email        String?   @unique
+  nickname     String?   @db.VarChar(50)
+  user_profile String?
+  deleted      Boolean?  @default(false)
+  created_at   DateTime? @default(now()) @db.Timestamptz(6)
+}
