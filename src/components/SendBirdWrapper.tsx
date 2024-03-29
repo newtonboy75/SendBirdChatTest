@@ -6,7 +6,6 @@ import useSendbirdStateContext from "@sendbird/uikit-react/useSendbirdStateConte
 import { useSession } from "next-auth/react";
 import { GroupChannel } from "@sendbird/chat/groupChannel";
 import {
-  getAllChannels,
   save_channel,
   updateUserChannel,
 } from "@/database/channel";
@@ -25,7 +24,7 @@ export default function SendBirdWrapper() {
     const groupChannelHandler = new GroupChannelHandler({
       onChannelDeleted: (channelUrl, channelType) => {
         setCurrentChannel(channelUrl);
-        console.log("deleted channel", channelUrl);
+        //console.log("deleted channel", channelUrl);
       },
     });
   }, [sdk]);
