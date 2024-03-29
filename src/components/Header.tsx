@@ -9,7 +9,7 @@ const Header = () => {
   if (session) {
     return (
       <>
-        <div className="inline-flex items-center justify-between w-full py-2 px-6 text-sm">
+        <div className="inline-flex items-center justify-between w-full py-2 px-6 text-sm fixed top-0 z-20 bg-black">
           <p className="float-left">SendBird Test App</p>
           <p>
             Hello {session.user?.name} |{" "}

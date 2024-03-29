@@ -18,6 +18,5 @@ export const leave_channel = async (param: string) => {
       deleted: true,
     },
   });
-
-  return updateChannel;
+  return true
 };

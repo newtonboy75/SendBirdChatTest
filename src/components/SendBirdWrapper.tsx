@@ -5,7 +5,6 @@ import GroupChannelList from "@sendbird/uikit-react/GroupChannelList";
 import useSendbirdStateContext from "@sendbird/uikit-react/useSendbirdStateContext";
 import { useSession } from "next-auth/react";
 import { GroupChannel } from "@sendbird/chat/groupChannel";
-import { useRouter } from "next/navigation";
 import { leave_channel, save_channel } from "@/database/channel";
 import { update } from "@/database/user";
 
@@ -13,9 +12,7 @@ export default function SendBirdWrapper() {
   const [currentChannel, setCurrentChannel] = useState<string>("");
   const [showSettings, setShowSettings] = useState<boolean>(false);
   const globalStore = useSendbirdStateContext();
-
   const { data: session } = useSession();
-  const router = useRouter();
 
   /**
    * updates user database
@@ -32,11 +29,11 @@ export default function SendBirdWrapper() {
 
   /**
    * check new channel and add to db
-   * @param channel 
-   * @returns 
+   * @param channel
+   * @returns
    */
   const channelCreated = async (channel: GroupChannel) => {
-    console.log(channel);
+    //console.log(channel);
 
     const data = {
       url: channel.url,
@@ -49,19 +46,21 @@ export default function SendBirdWrapper() {
   };
 
   /**
-   * updates channel db when user leaves the 
+   * updates channel db when user leaves the
    * group channel
-   * 
-   * @param channel 
+   *
+   * @param channel
    */
   const leftChannel = async (channel: string) => {
-    const channel_url = await leave_channel(channel);
-    router.refresh();
+    const leave = await leave_channel(channel);
+    if (leave) {
+      window.location.reload;
+    }
   };
 
   return (
     <>
-      <div className="flex h-screen customized-app">
+      <div className="flex h-screen z-10 mt-10">
         <div className="sendbird-app__channellist-wrap">
           <GroupChannelList
             channelListQueryParams={{
@@ -96,7 +95,7 @@ export default function SendBirdWrapper() {
                 setShowSettings(false);
               }}
               onLeaveChannel={() => {
-                leftChannel(currentChannel);
+                return leftChannel(currentChannel);
               }}
             />
           </div>

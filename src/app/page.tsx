@@ -4,7 +4,6 @@ import SendbirdProvider from "@sendbird/uikit-react/SendbirdProvider";
 import "@sendbird/uikit-react/dist/index.css";
 import { useSession, signIn } from "next-auth/react";
 import { useEffect, useState } from "react";
-
 import Header from "@/components/Header";
 import SendBirdWrapper from "@/components/SendBirdWrapper";
 import { create, user } from "@/database/user";
@@ -23,7 +22,7 @@ export default function Home() {
 
     const checkUser = async () => {
       const existingUser = await user(session?.user?.email!);
-      console.log(existingUser);
+      //console.log(existingUser);
 
       if (!existingUser) {
         const user_data = {
