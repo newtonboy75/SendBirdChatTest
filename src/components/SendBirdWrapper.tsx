@@ -1,18 +1,40 @@
 import Channel from "@sendbird/uikit-react/Channel";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ChannelSettings from "@sendbird/uikit-react/ChannelSettings";
 import GroupChannelList from "@sendbird/uikit-react/GroupChannelList";
 import useSendbirdStateContext from "@sendbird/uikit-react/useSendbirdStateContext";
 import { useSession } from "next-auth/react";
 import { GroupChannel } from "@sendbird/chat/groupChannel";
-import { leave_channel, save_channel } from "@/database/channel";
+import {
+  getAllChannels,
+  save_channel,
+  updateUserChannel,
+} from "@/database/channel";
 import { update } from "@/database/user";
+import GroupChannelHandler from "@sendbird/uikit-react/handlers/GroupChannelHandler";
 
 export default function SendBirdWrapper() {
   const [currentChannel, setCurrentChannel] = useState<string>("");
   const [showSettings, setShowSettings] = useState<boolean>(false);
+  const [channelToDelete, setChannelToDelete] = useState<string>("");
   const globalStore = useSendbirdStateContext();
+  const sdk = globalStore?.stores?.sdkStore?.sdk;
   const { data: session } = useSession();
+
+  useEffect(() => {
+    const groupChannelHandler = new GroupChannelHandler({
+      onChannelDeleted: (channelUrl, channelType) => {
+        setCurrentChannel(channelUrl);
+        console.log("deleted channel", channelUrl);
+      },
+    });
+  }, [sdk]);
+
+  useEffect(() => {
+    const updateChannel = async () => {
+      const leave = await updateUserChannel(channelToDelete);
+    };
+  }, [channelToDelete]);
 
   /**
    * updates user database
@@ -43,19 +65,6 @@ export default function SendBirdWrapper() {
     };
     const new_channel = await save_channel(data);
     return new_channel;
-  };
-
-  /**
-   * updates channel db when user leaves the
-   * group channel
-   *
-   * @param channel
-   */
-  const leftChannel = async (channel: string) => {
-    const leave = await leave_channel(channel);
-    if (leave) {
-      window.location.reload;
-    }
   };
 
   return (
@@ -93,9 +102,6 @@ export default function SendBirdWrapper() {
               channelUrl={currentChannel}
               onCloseClick={() => {
                 setShowSettings(false);
-              }}
-              onLeaveChannel={() => {
-                return leftChannel(currentChannel);
               }}
             />
           </div>

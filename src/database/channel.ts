@@ -9,7 +9,7 @@ export const save_channel = async (params: any) => {
   return channels;
 };
 
-export const leave_channel = async (param: string) => {
+export const updateUserChannel = async (param: string) => {
   const updateChannel = await prisma.userChannel.update({
     where: {
       url: param,
@@ -20,3 +20,13 @@ export const leave_channel = async (param: string) => {
   });
   return true
 };
+
+export const getAllChannels = async () => {
+  const allChannels = await prisma.userChannel.findMany({
+    where: {
+      deleted: false
+    }
+  })
+
+  return allChannels
+}
