@@ -5,28 +5,39 @@ import GroupChannelList from "@sendbird/uikit-react/GroupChannelList";
 import useSendbirdStateContext from "@sendbird/uikit-react/useSendbirdStateContext";
 import { useSession } from "next-auth/react";
 import { GroupChannel } from "@sendbird/chat/groupChannel";
-import {
-  save_channel,
-  updateUserChannel,
-} from "@/database/channel";
+import { save_channel, updateUserChannel } from "@/database/channel";
 import { update } from "@/database/user";
 import GroupChannelHandler from "@sendbird/uikit-react/handlers/GroupChannelHandler";
+import SendbirdChat from "@sendbird/chat";
+import { GroupChannelModule } from "@sendbird/chat/groupChannel";
+
+const APP_ID = process.env.APP_ID!;
 
 export default function SendBirdWrapper() {
   const [currentChannel, setCurrentChannel] = useState<string>("");
   const [showSettings, setShowSettings] = useState<boolean>(false);
   const [channelToDelete, setChannelToDelete] = useState<string>("");
+
   const globalStore = useSendbirdStateContext();
   const sdk = globalStore?.stores?.sdkStore?.sdk;
   const { data: session } = useSession();
 
+  var sb = SendbirdChat.init({
+    appId: APP_ID,
+    modules: [new GroupChannelModule()],
+  });
+
   useEffect(() => {
     const groupChannelHandler = new GroupChannelHandler({
       onChannelDeleted: (channelUrl, channelType) => {
-        setCurrentChannel(channelUrl);
-        //console.log("deleted channel", channelUrl);
+        setCurrentChannel(channelUrl!);
       },
     });
+
+    sb.groupChannel.addGroupChannelHandler(
+      "NEWTON-3275",
+      groupChannelHandler
+    );
   }, [sdk]);
 
   useEffect(() => {
