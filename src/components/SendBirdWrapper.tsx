@@ -4,10 +4,10 @@ import ChannelSettings from "@sendbird/uikit-react/ChannelSettings";
 import GroupChannelList from "@sendbird/uikit-react/GroupChannelList";
 import useSendbirdStateContext from "@sendbird/uikit-react/useSendbirdStateContext";
 import { useSession } from "next-auth/react";
-import { update } from "@/database/user";
 import { GroupChannel } from "@sendbird/chat/groupChannel";
-import { leave_channel, save_channel } from "@/database/channel";
 import { useRouter } from "next/navigation";
+import { leave_channel, save_channel } from "@/database/channel";
+import { update } from "@/database/user";
 
 export default function SendBirdWrapper() {
   const [currentChannel, setCurrentChannel] = useState<string>("");

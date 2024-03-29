@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
 import Header from "@/components/Header";
 import SendBirdWrapper from "@/components/SendBirdWrapper";
 import { create, user } from "@/database/user";
-
 const APP_ID = process.env.APP_ID!;
 
 export default function Home() {
