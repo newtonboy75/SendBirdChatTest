@@ -1,15 +1,15 @@
 import Channel from "@sendbird/uikit-react/Channel";
 import { useEffect, useState } from "react";
+import { save_channel, updateUserChannel } from "@/database/channel";
+import { update } from "@/database/user";
+import { useSession } from "next-auth/react";
+import { GroupChannel } from "@sendbird/chat/groupChannel";
+import { GroupChannelModule } from "@sendbird/chat/groupChannel";
+import GroupChannelHandler from "@sendbird/uikit-react/handlers/GroupChannelHandler";
+import SendbirdChat from "@sendbird/chat";
 import ChannelSettings from "@sendbird/uikit-react/ChannelSettings";
 import GroupChannelList from "@sendbird/uikit-react/GroupChannelList";
 import useSendbirdStateContext from "@sendbird/uikit-react/useSendbirdStateContext";
-import { useSession } from "next-auth/react";
-import { GroupChannel } from "@sendbird/chat/groupChannel";
-import { save_channel, updateUserChannel } from "@/database/channel";
-import { update } from "@/database/user";
-import GroupChannelHandler from "@sendbird/uikit-react/handlers/GroupChannelHandler";
-import SendbirdChat from "@sendbird/chat";
-import { GroupChannelModule } from "@sendbird/chat/groupChannel";
 
 const APP_ID = process.env.APP_ID!;
 
@@ -34,10 +34,7 @@ export default function SendBirdWrapper() {
       },
     });
 
-    sb.groupChannel.addGroupChannelHandler(
-      "NEWTON-3275",
-      groupChannelHandler
-    );
+    sb.groupChannel.addGroupChannelHandler("NEWTON-3275", groupChannelHandler);
   }, [sdk]);
 
   useEffect(() => {
