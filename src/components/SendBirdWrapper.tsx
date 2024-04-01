@@ -22,7 +22,7 @@ export default function SendBirdWrapper() {
   const sdk = globalStore?.stores?.sdkStore?.sdk;
   const { data: session } = useSession();
 
-  var sb = SendbirdChat.init({
+  const sb = SendbirdChat.init({
     appId: APP_ID,
     modules: [new GroupChannelModule()],
   });
@@ -35,7 +35,7 @@ export default function SendBirdWrapper() {
     });
 
     sb.groupChannel.addGroupChannelHandler("NEWTON-3275", groupChannelHandler);
-  }, [sdk]);
+  }, [sdk, sb.groupChannel]);
 
   useEffect(() => {
     const updateChannel = async () => {
