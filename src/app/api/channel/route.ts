@@ -14,7 +14,7 @@ export const GET = async (req: NextRequest, res: NextRequest) => {
   if (!session) {
     return NextResponse.json(
       {
-        message: ["Unauthorized", req],
+        message: ["Unauthorized"],
       },
       {
         status: 401,
@@ -40,7 +40,7 @@ export const PUT = async (req: NextRequest, res: NextRequest) => {
   if (!session) {
     return NextResponse.json(
       {
-        message: ["Unauthorized", req],
+        message: ["Unauthorized"],
       },
       {
         status: 401,
@@ -70,7 +70,7 @@ export const POST = async (req: NextRequest, res: NextRequest) => {
   if (!session) {
     return NextResponse.json(
       {
-        message: ["Unauthorized", req],
+        message: ["Unauthorized"],
       },
       {
         status: 401,
