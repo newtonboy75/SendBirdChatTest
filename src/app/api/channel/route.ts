@@ -8,31 +8,6 @@ const getCurrentSession = async () => {
   return session?.user;
 };
 
-export const GET = async (req: NextRequest, res: NextRequest) => {
-  const session = await getCurrentSession();
-
-  if (!session) {
-    return NextResponse.json(
-      {
-        message: ["Unauthorized"],
-      },
-      {
-        status: 401,
-      }
-    );
-  }
-
-  const user = await prisma.user.findUnique({
-    where: {
-      email: session?.email!,
-    },
-  });
-
-  return NextResponse.json({
-    data: user,
-  });
-};
-
 export const PUT = async (req: NextRequest, res: NextRequest) => {
   const session = await getCurrentSession();
   const {channel_url} = await req.json();
