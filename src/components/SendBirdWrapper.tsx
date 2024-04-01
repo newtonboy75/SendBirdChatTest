@@ -39,20 +39,22 @@ export default function SendBirdWrapper() {
 
   useEffect(() => {
     const updateChannel = async () => {
-      const leave = await updateUserChannel(channelToDelete);
+      const deleted_channel = await updateUserChannel(channelToDelete);
     };
   }, [channelToDelete]);
 
   /**
    * updates user database
    */
-  const userProfileEdited = async () => {
+  const userProfileEdited = async (user) => {
+    
+    console.log(user)
     const data = {
       email: session?.user?.email!,
-      nickname: globalStore?.stores?.userStore?.user.nickname,
-      user_profile: globalStore?.stores?.userStore?.user.profileUrl,
+      nickname: user.nickname,
+      user_profile: user.plainProfileUrl,
     };
-
+    console.log(data)
     await update(data);
   };
 
@@ -89,8 +91,8 @@ export default function SendBirdWrapper() {
             }}
             allowProfileEdit={true}
             onChannelCreated={(channel) => channelCreated(channel)}
-            onUserProfileUpdated={() => {
-              userProfileEdited();
+            onUserProfileUpdated={(user) => {
+              userProfileEdited(user);
             }}
             disableAutoSelect={false}
           />

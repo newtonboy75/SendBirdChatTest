@@ -19,6 +19,7 @@ export const create = async (data: any) => {
 };
 
 export const update = async (param: any) => {
+  console.log(param)
   const user = await prisma.user.update({
     where: {
       email: param.email,
