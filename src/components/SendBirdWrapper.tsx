@@ -47,14 +47,11 @@ export default function SendBirdWrapper() {
    * updates user database
    */
   const userProfileEdited = async (user) => {
-    
-    console.log(user)
     const data = {
       email: session?.user?.email!,
       nickname: user.nickname,
       user_profile: user.plainProfileUrl,
     };
-    console.log(data)
     await update(data);
   };
 
@@ -64,8 +61,6 @@ export default function SendBirdWrapper() {
    * @returns
    */
   const channelCreated = async (channel: GroupChannel) => {
-    //console.log(channel);
-
     const data = {
       url: channel.url,
       creator: [channel.creator?.nickname, channel.creator?.userId],
