@@ -6,7 +6,7 @@ import { useSession } from "next-auth/react";
 import { GroupChannel } from "@sendbird/chat/groupChannel";
 import { GroupChannelModule } from "@sendbird/chat/groupChannel";
 import GroupChannelHandler from "@sendbird/uikit-react/handlers/GroupChannelHandler";
-import SendbirdChat from "@sendbird/chat";
+import SendbirdChat, { User } from "@sendbird/chat";
 import ChannelSettings from "@sendbird/uikit-react/ChannelSettings";
 import GroupChannelList from "@sendbird/uikit-react/GroupChannelList";
 import useSendbirdStateContext from "@sendbird/uikit-react/useSendbirdStateContext";
@@ -46,7 +46,7 @@ export default function SendBirdWrapper() {
   /**
    * updates user database
    */
-  const userProfileEdited = async (user) => {
+  const userProfileEdited = async (user: User) => {
     const data = {
       email: session?.user?.email!,
       nickname: user.nickname,
