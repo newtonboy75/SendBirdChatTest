@@ -6,7 +6,6 @@ import SessionProvider from "@/context/SessionProvider";
 import "./globals.css";
 import { authOptions } from "./lib/authOptions";
 
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
