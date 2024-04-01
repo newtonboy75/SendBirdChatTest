@@ -5,8 +5,7 @@ import "@sendbird/uikit-react/dist/index.css";
 import { useSession, signIn } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Header from "@/components/Header";
-import SendBirdWrapper from "@/components/SendBirdWrapper";
-import { create, user } from "@/database/user";
+import SendBirdWrapper from "@/context/SendBirdWrapper";
 
 const APP_ID = process.env.APP_ID!;
 
@@ -22,21 +21,42 @@ export default function Home() {
     }, 2000);
 
     const checkUser = async () => {
-      const existingUser = await user(session?.user?.email!);
-      //console.log(existingUser);
+      const existingUser = await fetch(
+        "http://localhost:3000/api/user/email"
+      ).then((res) => {
+        return res.json();
+      });
 
-      if (!existingUser) {
+      //server action implementation
+      // const existingUser = await user(session?.user?.email!);
+
+      if (existingUser.data === null) {
         const user_data = {
           email: session?.user?.email!,
           nickname: session?.user?.name!,
           deleted: false,
         };
-        const createUser = await create(user_data);
-        setUserId(createUser.user_id!);
-        setNickName(createUser.nickname!);
+
+        try {
+          const response = await fetch("http://localhost:3000/api/user/email", {
+            method: "POST",
+            body: JSON.stringify(user_data),
+          });
+          const result = await response.json();
+          //console.log(result);
+
+          setUserId(result.data.user_id);
+          setNickName(result.data.nickname!);
+        } catch (error) {
+          console.error("Error:", error);
+        }
+
+        //server action implementation
+        // setUserId(createUser.user_id!);
+        // setNickName(createUser.nickname!);
       } else {
-        setUserId(existingUser.user_id!);
-        setNickName(existingUser.nickname!);
+        setUserId(existingUser.data.user_id!);
+        setNickName(existingUser.data.nickname!);
       }
     };
 

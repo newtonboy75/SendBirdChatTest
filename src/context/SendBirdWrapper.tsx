@@ -1,7 +1,6 @@
 import Channel from "@sendbird/uikit-react/Channel";
 import { useEffect, useState } from "react";
-import { save_channel, updateUserChannel } from "@/database/channel";
-import { update } from "@/database/user";
+import { updateUserChannel } from "@/app/lib/database/channel";
 import { useSession } from "next-auth/react";
 import { GroupChannel } from "@sendbird/chat/groupChannel";
 import { GroupChannelModule } from "@sendbird/chat/groupChannel";
@@ -47,12 +46,25 @@ export default function SendBirdWrapper() {
    * updates user database
    */
   const userProfileEdited = async (user: User) => {
-    const data = {
+    const bodyData = {
       email: session?.user?.email!,
       nickname: user.nickname,
       user_profile: user.plainProfileUrl,
     };
-    await update(data);
+
+    try {
+      const response = await fetch("http://localhost:3000/api/user/email", {
+        method: "PUT",
+        body: JSON.stringify(bodyData),
+        cache: "no-store",
+      });
+      const result = await response.json();
+      //console.log("Success:", result.data);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+
+    //await update(data);
   };
 
   /**
@@ -67,13 +79,24 @@ export default function SendBirdWrapper() {
       created_at: new Date().toISOString(),
       channel_name: channel.name,
     };
-    const new_channel = await save_channel(data);
-    return new_channel;
+
+    try {
+      const response = await fetch("http://localhost:3000/api/channel", {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
+      const result = await response.json();
+    } catch (error) {
+      console.error("Error:", error);
+    }
+
+    // const new_channel = await save_channel(data);
+    // return new_channel;
   };
 
   return (
     <>
-      <div className="flex h-screen z-10 mt-10">
+      <div className="flex flex-row h-screen z-10 mt-10 w-full">
         <div className="sendbird-app__channellist-wrap">
           <GroupChannelList
             channelListQueryParams={{
@@ -92,7 +115,7 @@ export default function SendBirdWrapper() {
             disableAutoSelect={false}
           />
         </div>
-        <div className="sendbird-app__conversation-wrap flex-1">
+        <div className="sendbird-app__conversation-wrap flex-grow flex-1">
           <Channel
             channelUrl={currentChannel}
             onChatHeaderActionClick={() => {
