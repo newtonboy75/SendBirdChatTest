@@ -39,7 +39,7 @@ export default function Home() {
 
         try {
           const response = await fetch("http://localhost:3000/api/user/email", {
-            method: "POST",
+            method: "post",
             body: JSON.stringify(user_data),
           });
           const result = await response.json();
