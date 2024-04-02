@@ -43,7 +43,6 @@ export default function Home() {
             body: JSON.stringify(user_data),
           });
           const result = await response.json();
-          //console.log(result);
 
           setUserId(result.data.user_id);
           setNickName(result.data.nickname!);
