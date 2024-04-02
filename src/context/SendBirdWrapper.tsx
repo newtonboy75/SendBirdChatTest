@@ -38,8 +38,27 @@ export default function SendBirdWrapper() {
 
   useEffect(() => {
     const updateChannel = async () => {
-      const deleted_channel = await updateUserChannel(channelToDelete);
+      //const deleted_channel = await updateUserChannel(channelToDelete);
+
+      if (channelToDelete !== "") {
+        const data = {
+          url: channelToDelete,
+          deleted: true,
+        };
+
+        try {
+          const response = await fetch("http://localhost:3000/api/channel", {
+            method: "PUT",
+            body: JSON.stringify(data),
+          });
+          const result = await response.json();
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      }
     };
+
+    updateChannel();
   }, [channelToDelete]);
 
   /**
