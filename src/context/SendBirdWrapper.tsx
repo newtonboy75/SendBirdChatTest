@@ -94,6 +94,23 @@ export default function SendBirdWrapper() {
     // return new_channel;
   };
 
+  const channelModified = async (channel: GroupChannel) => {
+    const data = {
+      url: channel.url,
+      channel_name: channel.name,
+    };
+
+    try {
+      const response = await fetch("http://localhost:3000/api/channel", {
+        method: "PUT",
+        body: JSON.stringify(data),
+      });
+      const result = await response.json();
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   return (
     <>
       <div className="flex flex-row h-screen z-10 mt-10 w-full">
@@ -129,6 +146,9 @@ export default function SendBirdWrapper() {
               channelUrl={currentChannel}
               onCloseClick={() => {
                 setShowSettings(false);
+              }}
+              onChannelModified={(channel) => {
+                channelModified(channel);
               }}
             />
           </div>

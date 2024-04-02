@@ -10,7 +10,8 @@ const getCurrentSession = async () => {
 
 export const PUT = async (req: NextRequest, res: NextRequest) => {
   const session = await getCurrentSession();
-  const {channel_url} = await req.json();
+  const data = await req.json();
+  console.log(data);
 
   if (!session) {
     return NextResponse.json(
@@ -25,13 +26,10 @@ export const PUT = async (req: NextRequest, res: NextRequest) => {
 
   const updateChannel = await prisma.userChannel.update({
     where: {
-      url: channel_url,
+      url: data.url,
     },
-    data: {
-      deleted: true,
-    },
+    data: data,
   });
-
 
   return NextResponse.json({
     data: updateChannel,
@@ -56,7 +54,6 @@ export const POST = async (req: NextRequest, res: NextRequest) => {
   const channel = await prisma.userChannel.create({
     data: data,
   });
-
 
   return NextResponse.json({
     data: channel,

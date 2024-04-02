@@ -66,7 +66,6 @@ export const PUT = async (req: NextRequest, res: NextRequest) => {
 export const POST = async (req: NextRequest, res: NextRequest) => {
   const session = await getCurrentSession();
   const data = await req.json();
-  console.log(data);
 
   if (!session) {
     return NextResponse.json(
