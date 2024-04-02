@@ -28,7 +28,7 @@ export default function SendBirdWrapper() {
   useEffect(() => {
     const groupChannelHandler = new GroupChannelHandler({
       onChannelDeleted: (channelUrl, channelType) => {
-        setCurrentChannel(channelUrl!);
+        setChannelToDelete(channelUrl!);
       },
     });
 
