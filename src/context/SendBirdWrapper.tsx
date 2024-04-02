@@ -1,6 +1,5 @@
 import Channel from "@sendbird/uikit-react/Channel";
 import { useEffect, useState } from "react";
-import { updateUserChannel } from "@/app/lib/database/channel";
 import { useSession } from "next-auth/react";
 import { GroupChannel } from "@sendbird/chat/groupChannel";
 import { GroupChannelModule } from "@sendbird/chat/groupChannel";
