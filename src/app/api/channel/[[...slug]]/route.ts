@@ -11,9 +11,6 @@ const getCurrentSession = async () => {
 export const PUT = async (req: NextRequest, res: NextRequest) => {
   const session = await getCurrentSession();
   const data = await req.json();
-  console.log('start this')
-  console.log(data);
-  console.log('end this')
 
   if (!session) {
     return NextResponse.json(

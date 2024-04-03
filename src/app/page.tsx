@@ -6,6 +6,7 @@ import { useSession, signIn } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Header from "@/components/Header";
 import SendBirdWrapper from "@/context/SendBirdWrapper";
+import Image from 'next/image'
 
 const APP_ID = process.env.APP_ID!;
 
@@ -80,8 +81,9 @@ export default function Home() {
       {loading ? (
         <div></div>
       ) : (
-        <div className="flex flex-col items-center justify-center h-screen bg-white text-black gap-2">
-          <h1 className="text-2xl font-bold max-w-sm text-center">
+        <div className="flex flex-col items-center justify-center h-screen bg-white text-black gap-2 mt--10">
+          <Image src="/sendbird.png" width={300} height={300} alt="Picture of the author" />
+          <h1 className="text-2xl font-semibold max-w-sm text-center mt-5">
             Welcome to Sendbird Test App
           </h1>
           <button
